@@ -1,4 +1,4 @@
 Purpose,Method,a,b,c,constraint
-NHB,Exponential,,,,Production
-HBO,Exponential,,,,Production
-HBW,Exponential,,,,Production
+NHB,Exponential,,,0.2773,Production
+HBO,Exponential,,,2.602,Production
+HBW,Exponential,,,01.347,Production

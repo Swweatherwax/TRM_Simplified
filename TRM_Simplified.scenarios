@@ -1,5 +1,9 @@
     
     
 Scenario "Base Year"
+[Base Folder] = "C:\\Users\\sweath\\Downloads\\Model\\Inputs"
 EndScenario
-    
+Scenario "Scenario"
+
+[Base Folder] = "C:\\Users\\sweath\\Downloads\\Model\\Scenario"
+EndScenario    

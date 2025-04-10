@@ -1,73 +1,67 @@
-model label=NestModel version=1.5
+model label=MC version=1.5
   field name=Time
-  field name=Transfers
-  field name=AccessOrig
-  field name=AccessDest
-  source name=Trips type=Survey primary=True origins=True destinations=True view=triangle_trips idfield=TripID origfield=Origin destfield=Destination
-  source name=access type=Zonal view=access idfield=ID
-  source name=Walk type=Matrix file="C:\Users\sweath\Downloads\OneDrive_2025-02-27\Mode Choice Materials\walk_skims_All.mtx" filelabel=Walk rowindex=Origin colindex=Destination
-  source name=Bike type=Matrix file="C:\Users\sweath\Downloads\OneDrive_2025-02-27\Mode Choice Materials\bike_skims_All.mtx" filelabel=Bike rowindex=Origin colindex=Destination
-  source name=Transit type=Matrix file="C:\Users\sweath\Downloads\OneDrive_2025-02-27\Mode Choice Materials\transit_skims_AM.mtx" filelabel="AM Transit" rowindex=RCIndex colindex=RCIndex
-  source name=Auto type=Matrix file="C:\Users\sweath\Downloads\OneDrive_2025-02-27\Mode Choice Materials\auto_skims_MD.mtx" filelabel="MD Auto" rowindex=Origin colindex=Destination
-  segvar source=Trips spec=NumericTripType
-  segment name=HBW id=1
-    term name=Time coefficient=-0.000031
-    term name=Transfers coefficient=0.220143
-    term name=AccessOrig coefficient=0
-    term name=AccessDest coefficient=0
-    choice source=Trips spec=ModeNumeric
-    alternative name=Walk id=3 asc=-1.22352
-      data source=Walk spec=Time term=Time type=Matrix
-    alternative name=Bike id=4 asc=-4.95617
-      data source=Bike spec=Time term=Time type=Matrix
-    alternative name=Transit id=6 asc=-2.32025
-      available source=Transit spec=Available
-      data source=Transit spec="Total Time" term=Time type=Matrix
-      data source=Transit spec="Number of Transfers" term=Transfers type=Matrix
-      data source=access spec=Access_transit_AM_Retail_30 term=AccessOrig type=Origin
-      data source=access spec=Access_transit_AM_Retail_30 term=AccessDest type=Destination
-    alternative name=Car theta=0.5
-      alternative name=HOV parent=Car id=2 asc=-2.17085
-        data source=Auto spec=TimeMD term=Time type=Matrix
-      alternative name=SOV parent=Car id=1
-        data source=Auto spec=TimeMD term=Time type=Matrix
-  segment name=HBO id=2
-    term name=Time coefficient=-0.000029
-    term name=Transfers coefficient=0.171278
-    term name=AccessOrig coefficient=0
-    term name=AccessDest coefficient=0
-    choice source=Trips spec=ModeNumeric
+  field name=NXfers
+  field name=RetailAcc
+  source name=Auto type=Matrix primary=True origins=True destinations=True file=C:\Users\mwbc\Documents\Inputs\model_run\auto_skims_MD.mtx filelabel="MD Auto" rowindex=Origin colindex=Destination
+  source name=Bike type=Matrix file=C:\Users\mwbc\Documents\Inputs\model_run\bike_skims_All.mtx filelabel=Bike rowindex=Origin colindex=Destination
+  source name=Walk type=Matrix file=C:\Users\mwbc\Documents\Inputs\model_run\walk_skims_All.mtx filelabel=Walk rowindex=Origin colindex=Destination
+  source name=Transit type=Matrix file=C:\Users\mwbc\Documents\Inputs\model_run\transit_skims_MD.mtx filelabel="MD Transit" rowindex=RCIndex colindex=RCIndex
+  source name=Access type=Zonal view=access idfield=ID
+  segment name=HBW label=HBW id=1
+    term name=Time coefficient=-0.000027
+    term name=NXfers coefficient=0.203858
+    term name=RetailAcc coefficient=0
     alternative name=SOV id=1
-      data source=Auto spec=TimeMD term=Time type=Matrix
-    alternative name=HOV id=2 asc=0.131699
-      data source=Auto spec=TimeMD term=Time type=Matrix
-    alternative name=Walk id=3 asc=-0.354058
+      data source=Auto spec="TimeMD (Skim)" term=Time type=Matrix
+    alternative name=HOV id=2 asc=-2.23826
+      data source=Auto spec="TimeMD (Skim)" term=Time type=Matrix
+    alternative name=Walk id=3 asc=-1.98501
       data source=Walk spec=Time term=Time type=Matrix
-    alternative name=Bike id=4 asc=-3.52593
+    alternative name=Bike id=4 asc=-4.5853
       data source=Bike spec=Time term=Time type=Matrix
-    alternative name="School Bus" id=5 asc=-3.37272
-    alternative name=Transit id=6 asc=-2.30617
+    alternative name="School Bus" id=5 asc=-28.0455
+      data source=Transit spec="Total Time" term=Time type=Matrix
+    alternative name=Transit id=6 asc=-2.2559
       available source=Transit spec=Available
       data source=Transit spec="Total Time" term=Time type=Matrix
-      data source=Transit spec="Number of Transfers" term=Transfers type=Matrix
-      data source=access spec=Access_transit_AM_Retail_30 term=AccessOrig type=Origin
-      data source=access spec=Access_transit_AM_Retail_30 term=AccessDest type=Destination
-  segment name=NHB id=3
-    term name=Time coefficient=-0.016599
-    term name=Transfers coefficient=0.487477
-    term name=AccessOrig coefficient=-0.00001
-    term name=AccessDest coefficient=0.000505
-    choice source=Trips spec=ModeNumeric
+      data source=Transit spec="Number of Transfers" term=NXfers type=Matrix
+      data source=Access spec=Access_transit_MD_Retail_30 term=RetailAcc type=Origin
+  segment name=HBO label=HBO id=2
+    term name=Time coefficient=-0.000013
+    term name=NXfers coefficient=0.072266
+    term name=RetailAcc coefficient=0
     alternative name=SOV id=1
-      data source=Auto spec=TimeMD term=Time type=Matrix
-    alternative name=HOV id=2 asc=-0.176646
-      data source=Auto spec=TimeMD term=Time type=Matrix
-    alternative name=Walk id=3 asc=-0.346427
+      data source=Auto spec="TimeMD (Skim)" term=Time type=Matrix
+    alternative name=HOV id=2 asc=0.055468
+      data source=Auto spec="TimeMD (Skim)" term=Time type=Matrix
+    alternative name=Walk id=3 asc=-1.84378
       data source=Walk spec=Time term=Time type=Matrix
-    alternative name=Transit id=6 asc=-3.66681
+    alternative name=Bike id=4 asc=-3.97679
+      data source=Bike spec=Time term=Time type=Matrix
+    alternative name="School Bus" id=5 asc=-1.70895
+      data source=Transit spec="Total Time" term=Time type=Matrix
+    alternative name=Transit id=6 asc=-2.59701
       available source=Transit spec=Available
       data source=Transit spec="Total Time" term=Time type=Matrix
-      data source=Transit spec="Number of Transfers" term=Transfers type=Matrix
-      data source=access spec=Access_transit_AM_Retail_30 term=AccessOrig type=Origin
-      data source=access spec=Access_transit_AM_Retail_30 term=AccessDest type=Destination
+      data source=Transit spec="Number of Transfers" term=NXfers type=Matrix
+      data source=Access spec=Access_transit_MD_Retail_30 term=RetailAcc type=Origin
+  segment name=NHB label=NHB id=3
+    term name=Time coefficient=-0.0138
+    term name=NXfers coefficient=0.533836
+    term name=RetailAcc coefficient=0.000119
+    alternative name=SOV id=1
+      data source=Auto spec="TimeMD (Skim)" term=Time type=Matrix
+    alternative name=HOV id=2 asc=-0.214008
+      data source=Auto spec="TimeMD (Skim)" term=Time type=Matrix
+    alternative name=Walk id=3 asc=-0.660037
+      data source=Walk spec=Time term=Time type=Matrix
+    alternative name=Bike id=4 asc=-32.573
+      data source=Bike spec=Time term=Time type=Matrix
+    alternative name="School Bus" id=5 asc=-30.7502
+      data source=Transit spec="Total Time" term=Time type=Matrix
+    alternative name=Transit id=6 asc=-2.96668
+      available source=Transit spec=Available
+      data source=Transit spec="Total Time" term=Time type=Matrix
+      data source=Transit spec="Number of Transfers" term=NXfers type=Matrix
+      data source=Access spec=Access_transit_MD_Retail_30 term=RetailAcc type=Origin
 
